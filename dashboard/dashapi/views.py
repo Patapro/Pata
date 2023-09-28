@@ -5,9 +5,9 @@ from rest_framework import status
 
 from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer
 from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo
-from dashboard.dashapi.permissions import IsAdminOrReadOnly
+# from dashboard.dashapi.permissions import IsAdminOrReadOnly
 class ServiceProviderPersonalInfoAV(APIView):
-    permission_classes=[IsAdminOrReadOnly]
+    # permission_classes=[IsAdminOrReadOnly]
     
     def post(self, request):
         serializer = ServiceProviderPesrsonalInfoSerializer(data = request.data)
@@ -31,7 +31,7 @@ class ServiceProviderPersonalInfoAV(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class ServiceProviderWorkInfoAV(APIView):
-    permission_classes=[IsAdminOrReadOnly]
+    # permission_classes=[IsAdminOrReadOnly]
     
     def post(self, request):
         serializer = ServiceProviderWorkInfoSerializer(data = request.data)

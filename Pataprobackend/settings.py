@@ -1,4 +1,3 @@
-from datetime import timedelta
 
 """
 Django settings for Pataprobackend project.
@@ -126,8 +125,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SIMPLE_JWT = {
-#     'ROTATE_REFRESH_TOKENS' : True,
-#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
-# }

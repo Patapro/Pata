@@ -17,6 +17,7 @@ class ServiceProviderPersonalInfo(models.Model):
     )
     email=models.EmailField(max_length=100, null=False )
     phone_number = models.CharField(max_length=50, default='(+254) 000-0000', null=False)
+    Id_number = models.CharField(max_length=10, default='000-000-00', null=False)
     Active = models.BooleanField(default=False)
     created = models.DateTimeField(default=timezone.now)
     Update= models.DateTimeField(auto_now=True)
