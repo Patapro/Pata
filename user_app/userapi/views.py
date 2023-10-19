@@ -27,7 +27,9 @@ def Registration_view(request):
                 'response': 'Registration successful!',
                 'username': account.username,
                 'email': account.email,
-                'token': Token.objects.get(user=account).key
+                'ID': account.ID_number,
+                'phone_number': account.phone_number,
+                # 'token': Token.objects.get(user=account).key
                 
             }
             

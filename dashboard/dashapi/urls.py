@@ -1,8 +1,8 @@
 from django.urls import path
 from dashboard.dashapi.views import (
     AdminDashBoard,
-    ServiceProviderPersonalInfoAV, 
-    ServiceProviderWorkInfoAV,
+    # ServiceProviderPersonalInfoAV, 
+    # ServiceProviderWorkInfoAV,
     ServiceProviderDashBoard,
     LandingPage,
     )
