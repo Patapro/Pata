@@ -92,3 +92,10 @@ class ServiceProviderDashBoard(APIView):
         else:
             return Response(serializer.errors)
         
+class LandingPage(APIView):
+    
+    def get(self,request):
+        personal_info = ServiceProviderWorkInfo.objects.all()
+        serializer = ServiceProviderWorkInfoSerializer(personal_info, many=True)
+        return Response(serializer.data)
+        

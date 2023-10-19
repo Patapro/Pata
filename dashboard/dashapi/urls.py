@@ -13,6 +13,8 @@ urlpatterns = [
     # path('workinfo/<int:pk>/', ServiceProviderWorkInfoAV.as_view(), name='work-info-detail'),
     path('admindashboard/', AdminDashBoard.as_view(), name='admind-dashboard'),
     path('admindashboard/<int:pk>/', AdminDashBoard.as_view(), name='admind-dashboard-toggled'),
+    path('serviceprovider/<int:pk>', AdminDashBoard.as_view(), name='service-provider-delete'),
     path('serviceproviderdashboard/', ServiceProviderDashBoard.as_view(), name='service-provider-dashboard'),
     path('serviceproviderdashboard/<int:pk>/', ServiceProviderDashBoard.as_view(), name='service-provider-profile-updated'),
+    
 ]
