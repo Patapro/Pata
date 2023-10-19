@@ -62,11 +62,13 @@ class AdminDashBoard(APIView):
         return Response(serializer.data)
     
     def put(self, request, pk):
-        
-        provider = ServiceProviderWorkInfo.objects.get(id=pk.id)
-        provider.status = not provider.status
-        provider.save()
-        return Response({'message': 'Status changed'})
+        try:
+            provider = ServiceProviderWorkInfo.objects.get(id=pk)
+            provider.status = not provider.status
+            provider.save()
+            return Response({'message': 'Status changed'})
+        except ServiceProviderWorkInfo.DoesNotExist:
+            return Response({'error': 'Provider not found'}, status=status.HTTP_404_NOT_FOUND)
     
     def delete(self, request, pk):
         try:
