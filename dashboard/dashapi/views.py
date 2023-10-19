@@ -54,7 +54,7 @@ from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInf
 #         else:
 #             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class Admindashboard(APIView):
+class AdminDashBoard(APIView):
     
     def get(self,request):
         personal_info = ServiceProviderWorkInfo.objects.all()
@@ -68,3 +68,18 @@ class Admindashboard(APIView):
         provider.save()
         return Response({'message': 'Status changed'})
         
+class ServiceProviderDashBoard(APIView):
+    
+    def get(self,request):
+        personal_info = ServiceProviderWorkInfo.objects.get(user=self.request.user)
+        serializer = ServiceProviderWorkInfoSerializer(personal_info, many=False)
+        return Response(serializer.data)
+    
+    def put(self,request,pk):
+        personal_info = ServiceProviderWorkInfo.objects.get(user=self.request.user)
+        serializer = ServiceProviderWorkInfoSerializer(personal_info, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
