@@ -15,7 +15,6 @@ class ServiceProviderWorkInfoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_personal_info(self, obj):
-        
         personal_info = obj.personal_info
         if personal_info:
             personal_info_serializer = ServiceProviderPesrsonalInfoSerializer(personal_info)

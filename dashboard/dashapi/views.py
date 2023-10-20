@@ -2,6 +2,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework import generics
 
 from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer
 from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo
@@ -101,3 +102,20 @@ class LandingPage(APIView):
         serializer = ServiceProviderWorkInfoSerializer(personal_info, many=True)
         return Response(serializer.data)
         
+
+
+class ServiceProviderSF(generics.ListAPIView):
+    serializer_class = ServiceProviderWorkInfoSerializer  # Use the serializer class
+
+    def get_queryset(self):
+        service_query = self.request.query_params.get('service', None)
+        location_query = self.request.query_params.get('location', None)
+
+        queryset = ServiceProviderWorkInfo.objects.all()
+
+        if service_query:
+            queryset = queryset.filter(profession__icontains=service_query)
+
+        if location_query:
+            queryset = queryset.filter(location__icontains=location_query)
+        return queryset
