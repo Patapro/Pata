@@ -104,8 +104,8 @@ class LandingPage(APIView):
         
 
 
-class ServiceProviderSF(generics.ListAPIView):
-    serializer_class = ServiceProviderWorkInfoSerializer  # Use the serializer class
+class LandingPageServiceProviderSF(generics.ListAPIView):
+    serializer_class = ServiceProviderWorkInfoSerializer  
 
     def get_queryset(self):
         service_query = self.request.query_params.get('service', None)
@@ -118,4 +118,17 @@ class ServiceProviderSF(generics.ListAPIView):
 
         if location_query:
             queryset = queryset.filter(location__icontains=location_query)
+        return queryset
+
+class AdmindashboardServiceProviderSF(generics.ListAPIView):
+    serializer_class = ServiceProviderWorkInfoSerializer  
+
+    def get_queryset(self):
+        service_query = self.request.query_params.get('service', None)
+
+        queryset = ServiceProviderWorkInfo.objects.all()
+
+        if service_query:
+            queryset = queryset.filter(profession__icontains=service_query)
+
         return queryset
