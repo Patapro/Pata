@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', include('dashboard.dashapi.urls')),
     path('account/', include('user_app.userapi.urls')),
+    path('dashadmin/', include('admin_user.adminapi.urls')),
 ]
