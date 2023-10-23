@@ -21,4 +21,5 @@ urlpatterns = [
     path('dashboard/', include('dashboard.dashapi.urls')),
     path('account/', include('user_app.userapi.urls')),
     path('dashadmin/', include('admin_user.adminapi.urls')),
+    path('accountservicepro/', include('serviceprolog.serviceproapi.urls')),
 ]
