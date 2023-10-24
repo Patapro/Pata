@@ -21,7 +21,8 @@ class ServiceProviderPersonalInfo(models.Model):
     Active = models.BooleanField(default=False)
     created = models.DateTimeField(default=timezone.now)
     Update = models.DateTimeField(auto_now=True)
-    photo = models.ImageField(upload_to='photos/') 
+    photo = models.ImageField(upload_to='photos/', default='default_photo.jpg')
+ 
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
