@@ -37,3 +37,15 @@ class ServiceProviderWorkInfo(models.Model):
     
     def __str__(self):
         return self.profession
+    
+class ServiceRequest(models.Model):
+   
+    service_provider = models.ForeignKey(ServiceProviderPersonalInfo, on_delete=models.CASCADE, default=None)
+    client = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    service = models.CharField(max_length=50, null=False)
+    location = models.CharField(max_length=50, null=False)
+    created = models.DateTimeField(default=timezone.now)
+    Update = models.DateTimeField(auto_now=True)
+    Active = models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.service_provider} {self.service} {self.location} {self.client}"
