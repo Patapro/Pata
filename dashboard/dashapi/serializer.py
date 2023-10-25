@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo
+from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo, ServiceRequest
 
 class ServiceProviderPesrsonalInfoSerializer(serializers.ModelSerializer):
     
@@ -21,3 +21,7 @@ class ServiceProviderWorkInfoSerializer(serializers.ModelSerializer):
             return personal_info_serializer.data
         else:
             return None
+class RequestServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceRequest
+        fields = '__all__'

@@ -4,9 +4,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
 
-from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer
+from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer, RequestServiceSerializer
 from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo
-# from dashboard.dashapi.permissions import IsAdminOrReadOnly
 # class ServiceProviderPersonalInfoAV(APIView):
 #     # permission_classes=[IsAdminOrReadOnly]
     
@@ -132,3 +131,13 @@ class AdmindashboardServiceProviderSF(generics.ListAPIView):
             queryset = queryset.filter(profession__icontains=service_query)
 
         return queryset
+    
+class RequestService(APIView):
+    
+    def post(self, request):
+        serializer = RequestServiceSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
