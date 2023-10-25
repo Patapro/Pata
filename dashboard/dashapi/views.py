@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
 
-from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer, RequestServiceSerializer
-from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo
+from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer, RequestServiceSerializer, ClientInfoSerializer
+from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo, ServiceRequest, ClientInfo
 # class ServiceProviderPersonalInfoAV(APIView):
 #     # permission_classes=[IsAdminOrReadOnly]
     
@@ -94,6 +94,17 @@ class ServiceProviderDashBoard(APIView):
         else:
             return Response(serializer.errors)
         
+class ServiveProviderRequestInfo(APIView):
+    
+    def get(self, request, client_id):
+        try:
+            client_info = ClientInfo.objects.get(pk=client_id)
+            request = ServiceRequest.objects.get(client=client_info)
+            serializer = ServiceProviderWorkInfoSerializer(client_info, many=True)
+            return Response(serializer.data)
+        except ClientInfo.DoesNotExist:
+            return Response({'Error' : 'INFO NOT FOUND'}, status=status.HTTP_404_NOT_FOUND)
+        
 class LandingPage(APIView):
     
     def get(self,request):
@@ -101,8 +112,6 @@ class LandingPage(APIView):
         serializer = ServiceProviderWorkInfoSerializer(personal_info, many=True)
         return Response(serializer.data)
         
-
-
 class LandingPageServiceProviderSF(generics.ListAPIView):
     serializer_class = ServiceProviderWorkInfoSerializer  
 

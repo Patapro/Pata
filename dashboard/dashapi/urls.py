@@ -7,7 +7,8 @@ from dashboard.dashapi.views import (
     LandingPage,
     LandingPageServiceProviderSF,
     AdmindashboardServiceProviderSF,
-    RequestService
+    RequestService,
+    ServiveProviderRequestInfo
     )
 
 urlpatterns = [
@@ -23,5 +24,6 @@ urlpatterns = [
     path('landingpage/', LandingPage.as_view(), name='landing-page'),
     path('search/', LandingPageServiceProviderSF.as_view(), name='service-provider-search'),
     path('adsearch/', AdmindashboardServiceProviderSF.as_view(), name='ad-service-provider-search'),
-    path('requestservice/', RequestService.as_view(), name='request-service')
+    path('requestservice/', RequestService.as_view(), name='request-service'),
+    path('serviceproviderrequestinfo/<int:client_id>/', ServiveProviderRequestInfo.as_view(), name='service-provider-request-info'),
 ]
