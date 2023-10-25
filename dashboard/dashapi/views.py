@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,53 +7,6 @@ from rest_framework import generics
 
 from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer, RequestServiceSerializer, ClientInfoSerializer
 from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo, ServiceRequest, ClientInfo
-# class ServiceProviderPersonalInfoAV(APIView):
-#     # permission_classes=[IsAdminOrReadOnly]
-    
-#     def post(self, request):
-#         serializer = ServiceProviderPesrsonalInfoSerializer(data = request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors) 
-        
-#     def put(self, request, pk):
-#         try:
-#             personal_info = ServiceProviderPersonalInfo.objects.get(pk = pk)
-#         except ServiceProviderPersonalInfo.DoesNotExist: 
-#             return Response({'Error' : 'INFO NOT FOUND'}, status=status.HTTP_404_NOT_FOUND) 
-          
-#         serializer = ServiceProviderPesrsonalInfoSerializer(personal_info, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-# class ServiceProviderWorkInfoAV(APIView):
-#     # permission_classes=[IsAdminOrReadOnly]
-    
-#     def post(self, request):
-#         serializer = ServiceProviderWorkInfoSerializer(data = request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors) 
-        
-#     def put(self, request, pk):
-#         try:
-#             personal_info = ServiceProviderWorkInfo.objects.get(pk = pk)
-#         except ServiceProviderWorkInfo.DoesNotExist: 
-#             return Response({'Error' : 'INFO NOT FOUND'}, status=status.HTTP_404_NOT_FOUND) 
-          
-#         serializer = ServiceProviderWorkInfoSerializer(personal_info, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AdminDashBoard(APIView):
     
@@ -77,7 +31,33 @@ class AdminDashBoard(APIView):
             return Response({'Error' : 'INFO NOT FOUND'}, status=status.HTTP_404_NOT_FOUND)
         provider.delete()
         return Response({'message': 'Provider deleted'})
-        
+    
+class AdminServiceProviderApproval(APIView):
+    def get(self, request):
+        pending_requests = ServiceProviderWorkInfo.objects.filter(status="Pending")
+        serializer = ServiceProviderWorkInfoSerializer(pending_requests, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ApproveRequest(APIView):
+    def post(self, request, pk):
+        try:
+            request = ServiceProviderWorkInfo.objects.get(pk=pk)
+            request.status = "Approved"
+            request.save()
+            return Response({"detail": "Request approved."})
+        except ServiceProviderWorkInfo.DoesNotExist:
+            return Response({"detail": "Request not found."}, status=404)
+
+class RejectRequest(APIView):
+    def post(self, request, pk):
+        try:
+            request = ServiceProviderWorkInfo.objects.get(pk=pk)
+            request.status = "Rejected"
+            request.save()
+            return Response({"detail": "Request rejected."})
+        except ServiceProviderWorkInfo.DoesNotExist:
+            return Response({"detail": "Request not found."}, status=404)
+
 class ServiceProviderDashBoard(APIView):
     
     def get(self,request):
@@ -94,6 +74,20 @@ class ServiceProviderDashBoard(APIView):
         else:
             return Response(serializer.errors)
         
+class ServiceProvierRequestApprove(APIView):
+    
+    def post(self, request, pk):
+        try:
+            personal_info = ServiceProviderWorkInfo.objects.get(pk=pk)
+            personal_info.status = "Pending"  # Update the status to indicate a request for approval
+            personal_info.save()
+            
+            serializer = ServiceProviderWorkInfoSerializer(personal_info)
+            return Response(serializer.data)
+        except ServiceProviderWorkInfo.DoesNotExist:
+            return Response({"detail": "Service provider information not found."}, status=404)
+
+    
 class ServiveProviderRequestInfo(APIView):
     
     def get(self, request, client_id):

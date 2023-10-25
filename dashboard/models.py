@@ -28,6 +28,11 @@ class ServiceProviderPersonalInfo(models.Model):
         return f"{self.first_name} {self.last_name}"
     
 class ServiceProviderWorkInfo(models.Model):
+    status = models.CharField(
+        max_length=10,
+        choices=[("Pending", "Pending"), ("Approved", "Approved"), ("Rejected", "Rejected")],
+        default="Pending"
+    )
     personal_info = models.OneToOneField(ServiceProviderPersonalInfo, on_delete=models.CASCADE, primary_key=True, default=None)
     profession = models.CharField(max_length=50, null=False)
     location = models.CharField(max_length=50, null=False)
