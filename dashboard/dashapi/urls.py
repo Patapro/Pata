@@ -11,6 +11,8 @@ from dashboard.dashapi.views import (
     AdminServiceProviderApproval,
     ApproveRequest,
     RejectRequest,
+    ServiceProvidersAnalytics,
+    PendingRequestAnalytics
     )
 
 urlpatterns = [
@@ -28,4 +30,6 @@ urlpatterns = [
     path('adminrequestapproval/', AdminServiceProviderApproval.as_view(), name='admin-request-approval'),
     path('approve/<int:pk>/', ApproveRequest.as_view(), name='request-approval'),
     path('reject/<int:pk>/', RejectRequest.as_view(), name='request-reject'),
+    path('serviceprovideranalytics/', ServiceProvidersAnalytics.as_view(), name='service-provider-analytics'),
+    path('requestanalytics/', PendingRequestAnalytics.as_view(), name='request-analytics'),
 ]

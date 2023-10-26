@@ -144,3 +144,21 @@ class RequestService(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+        
+class ServiceProvidersAnalytics(APIView):
+    def get(self, request):
+        service_providers_count = ServiceProviderWorkInfo.objects.count()
+
+        response_data = {
+            "Number of service providers": service_providers_count,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+class PendingRequestAnalytics(APIView):
+    def get(self, request):
+        pending_requests = ServiceProviderWorkInfo.objects.filter(status="Pending").count()
+
+        response_data = {
+            "Total request": pending_requests,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
