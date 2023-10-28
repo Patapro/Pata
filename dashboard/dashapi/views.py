@@ -102,10 +102,9 @@ class ServiveProviderRequestInfo(APIView):
 class LandingPage(APIView):
     
     def get(self,request):
-        personal_info = ServiceProviderWorkInfo.objects.all()
+        personal_info = ServiceProviderWorkInfo.objects.filter(status = "Approved").all()
         serializer = ServiceProviderWorkInfoSerializer(personal_info, many=True)
         return Response(serializer.data)
-        
 class LandingPageServiceProviderSF(generics.ListAPIView):
     serializer_class = ServiceProviderWorkInfoSerializer  
 

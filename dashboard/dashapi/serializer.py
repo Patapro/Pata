@@ -5,14 +5,13 @@ class ServiceProviderPesrsonalInfoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceProviderPersonalInfo
-        exclude = ['created', 'Update']
-        
+        exclude = ['id', 'created', 'Update']
 class ServiceProviderWorkInfoSerializer(serializers.ModelSerializer):
     personal_info = serializers.SerializerMethodField()
 
     class Meta:
         model = ServiceProviderWorkInfo
-        fields = '__all__'
+        exclude = ['created', 'status']
 
     def get_personal_info(self, obj):
         personal_info = obj.personal_info
@@ -21,7 +20,6 @@ class ServiceProviderWorkInfoSerializer(serializers.ModelSerializer):
             return personal_info_serializer.data
         else:
             return None
-
 class ClientInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientInfo
@@ -30,5 +28,3 @@ class RequestServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceRequest
         fields = '__all__'
-        
-        
