@@ -105,6 +105,7 @@ class LandingPage(APIView):
         personal_info = ServiceProviderWorkInfo.objects.filter(status = "Approved").all()
         serializer = ServiceProviderWorkInfoSerializer(personal_info, many=True)
         return Response(serializer.data)
+    
 class LandingPageServiceProviderSF(generics.ListAPIView):
     serializer_class = ServiceProviderWorkInfoSerializer  
 
