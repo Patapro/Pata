@@ -4,11 +4,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from dashboard.dashapi.serializer import ServiceProviderPesrsonalInfoSerializer, ServiceProviderWorkInfoSerializer, RequestServiceSerializer, ClientInfoSerializer
 from dashboard.models import ServiceProviderPersonalInfo, ServiceProviderWorkInfo, ServiceRequest, ClientInfo
 
 class AdminDashBoard(APIView):
+    from rest_framework.permissions import IsAuthenticated
     
     def get(self,request):
         personal_info = ServiceProviderWorkInfo.objects.all()
@@ -33,12 +35,16 @@ class AdminDashBoard(APIView):
         return Response({'message': 'Provider deleted'})
     
 class AdminServiceProviderApproval(APIView):
+    from rest_framework.permissions import IsAuthenticated
+    
     def get(self, request):
         pending_requests = ServiceProviderWorkInfo.objects.filter(status="Pending")
         serializer = ServiceProviderWorkInfoSerializer(pending_requests, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ApproveRequest(APIView):
+    from rest_framework.permissions import IsAuthenticated
+    
     def post(self, request, pk):
         try:
             request = ServiceProviderWorkInfo.objects.get(pk=pk)
@@ -49,6 +55,8 @@ class ApproveRequest(APIView):
             return Response({"detail": "Request not found."}, status=404)
 
 class RejectRequest(APIView):
+    from rest_framework.permissions import IsAuthenticated
+    
     def post(self, request, pk):
         try:
             request = ServiceProviderWorkInfo.objects.get(pk=pk)
@@ -59,6 +67,7 @@ class RejectRequest(APIView):
             return Response({"detail": "Request not found."}, status=404)
 
 class ServiceProviderDashBoard(APIView):
+    from rest_framework.permissions import IsAuthenticated
     
     def get(self,request):
         personal_info = ServiceProviderWorkInfo.objects.get(user=self.request.user)
@@ -75,6 +84,7 @@ class ServiceProviderDashBoard(APIView):
             return Response(serializer.errors)
         
 class ServiceProvierRequestApprove(APIView):
+    from rest_framework.permissions import IsAuthenticated
     
     def post(self, request, pk):
         try:
@@ -89,6 +99,7 @@ class ServiceProvierRequestApprove(APIView):
 
     
 class ServiveProviderRequestInfo(APIView):
+    from rest_framework.permissions import IsAuthenticated
     
     def get(self, request, client_id):
         try:
@@ -123,6 +134,8 @@ class LandingPageServiceProviderSF(generics.ListAPIView):
         return queryset
 
 class AdmindashboardServiceProviderSF(generics.ListAPIView):
+    from rest_framework.permissions import IsAuthenticated
+    
     serializer_class = ServiceProviderWorkInfoSerializer  
 
     def get_queryset(self):
@@ -136,6 +149,7 @@ class AdmindashboardServiceProviderSF(generics.ListAPIView):
         return queryset
     
 class RequestService(APIView):
+    from rest_framework.permissions import IsAuthenticated
     
     def post(self, request):
         serializer = RequestServiceSerializer(data = request.data)
@@ -146,6 +160,8 @@ class RequestService(APIView):
             return Response(serializer.errors)
         
 class ServiceProvidersAnalytics(APIView):
+    from rest_framework.permissions import IsAuthenticated
+    
     def get(self, request):
         service_providers_count = ServiceProviderWorkInfo.objects.count()
 
@@ -155,6 +171,8 @@ class ServiceProvidersAnalytics(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
     
 class PendingRequestAnalytics(APIView):
+    from rest_framework.permissions import IsAuthenticated
+    
     def get(self, request):
         pending_requests = ServiceProviderWorkInfo.objects.filter(status="Pending").count()
 
