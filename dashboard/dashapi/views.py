@@ -68,7 +68,7 @@ class ApproveRequest(APIView):
             return Response({"detail": "Request approved."})
         except ServiceProviderWorkInfo.DoesNotExist:
             return Response({"detail": "Request not found."}, status=404)
-
+        
 class RejectRequest(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
@@ -81,7 +81,47 @@ class RejectRequest(APIView):
             return Response({"detail": "Request rejected."})
         except ServiceProviderWorkInfo.DoesNotExist:
             return Response({"detail": "Request not found."}, status=404)
+        
+class AdmindashboardServiceProviderSF(generics.ListAPIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    serializer_class = ServiceProviderWorkInfoSerializer  
 
+    def get_queryset(self):
+        service_query = self.request.query_params.get('service', None)
+
+        queryset = ServiceProviderWorkInfo.objects.all()
+
+        if service_query:
+            queryset = queryset.filter(profession__icontains=service_query)
+
+        return queryset
+    
+class ServiceProvidersAnalytics(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        service_providers_count = ServiceProviderWorkInfo.objects.count()
+
+        response_data = {
+            "Number of service providers": service_providers_count,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+class PendingRequestAnalytics(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        pending_requests = ServiceProviderWorkInfo.objects.filter(status="Pending").count()
+
+        response_data = {
+            "Total request": pending_requests,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    
 class ServiceProviderDashBoard(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -114,8 +154,7 @@ class ServiceProvierRequestApprove(APIView):
             return Response(serializer.data)
         except ServiceProviderWorkInfo.DoesNotExist:
             return Response({"detail": "Service provider information not found."}, status=404)
-
-    
+        
 class ServiveProviderRequestInfo(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -151,22 +190,6 @@ class LandingPageServiceProviderSF(generics.ListAPIView):
         if location_query:
             queryset = queryset.filter(location__icontains=location_query)
         return queryset
-
-class AdmindashboardServiceProviderSF(generics.ListAPIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    serializer_class = ServiceProviderWorkInfoSerializer  
-
-    def get_queryset(self):
-        service_query = self.request.query_params.get('service', None)
-
-        queryset = ServiceProviderWorkInfo.objects.all()
-
-        if service_query:
-            queryset = queryset.filter(profession__icontains=service_query)
-
-        return queryset
     
 class RequestService(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -179,27 +202,3 @@ class RequestService(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
-        
-class ServiceProvidersAnalytics(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    def get(self, request):
-        service_providers_count = ServiceProviderWorkInfo.objects.count()
-
-        response_data = {
-            "Number of service providers": service_providers_count,
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
-    
-class PendingRequestAnalytics(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    def get(self, request):
-        pending_requests = ServiceProviderWorkInfo.objects.filter(status="Pending").count()
-
-        response_data = {
-            "Total request": pending_requests,
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
