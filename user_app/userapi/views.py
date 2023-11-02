@@ -12,7 +12,7 @@ from user_app import models
 def logout_view(request):
     if request.method == 'POST':
         request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response('Logout successful!', status=status.HTTP_200_OK)
     
 
 @api_view(['POST'])
@@ -27,9 +27,7 @@ def Registration_view(request):
                 'response': 'Registration successful!',
                 'username': account.username,
                 'email': account.email,
-                'ID': account.ID_number,
-                'phone_number': account.phone_number,
-                # 'token': Token.objects.get(user=account).key
+                'token': Token.objects.get(user=account).key
                 
             }
             

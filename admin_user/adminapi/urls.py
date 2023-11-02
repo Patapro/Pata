@@ -1,6 +1,9 @@
 from django.urls import path
-from admin_user.adminapi.views import AdminLoginView
+from rest_framework.authtoken.views import obtain_auth_token
+from admin_user.adminapi.views import logout_view
 
 urlpatterns = [
-    path('logadmin/', AdminLoginView.as_view(), name='admin-login'),
+    path('adminlogin/', obtain_auth_token, name='admin-login'),
+    path('adminlogout/',logout_view, name='admin-login'),
+    
 ]
