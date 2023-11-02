@@ -22,7 +22,6 @@ from dashboard.models import (
     )
 
 class AdminDashBoard(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     
     def get(self,request):
@@ -48,7 +47,6 @@ class AdminDashBoard(APIView):
         return Response({'message': 'Provider deleted'})
     
 class AdminServiceProviderApproval(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     
     def get(self, request):
@@ -57,7 +55,6 @@ class AdminServiceProviderApproval(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ApproveRequest(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     
     def post(self, request, pk):
@@ -70,7 +67,6 @@ class ApproveRequest(APIView):
             return Response({"detail": "Request not found."}, status=404)
         
 class RejectRequest(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     
     def post(self, request, pk):
@@ -83,7 +79,6 @@ class RejectRequest(APIView):
             return Response({"detail": "Request not found."}, status=404)
         
 class AdmindashboardServiceProviderSF(generics.ListAPIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     serializer_class = ServiceProviderWorkInfoSerializer  
@@ -99,7 +94,6 @@ class AdmindashboardServiceProviderSF(generics.ListAPIView):
         return queryset
     
 class ServiceProvidersAnalytics(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
@@ -111,7 +105,6 @@ class ServiceProvidersAnalytics(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
     
 class PendingRequestAnalytics(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
@@ -123,7 +116,6 @@ class PendingRequestAnalytics(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
     
 class ServiceProviderDashBoard(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     def get(self,request):
@@ -141,7 +133,6 @@ class ServiceProviderDashBoard(APIView):
             return Response(serializer.errors)
         
 class ServiceProvierRequestApprove(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     def post(self, request, pk):
@@ -156,7 +147,6 @@ class ServiceProvierRequestApprove(APIView):
             return Response({"detail": "Service provider information not found."}, status=404)
         
 class ServiveProviderRequestInfo(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     def get(self, request, client_id):
@@ -192,7 +182,6 @@ class LandingPageServiceProviderSF(generics.ListAPIView):
         return queryset
     
 class RequestService(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
     
     def post(self, request):

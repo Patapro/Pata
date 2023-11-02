@@ -3,12 +3,10 @@ from rest_framework import serializers
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
-    ID_number = serializers.CharField(write_only=True)
-    phone_number = serializers.CharField(write_only=True)
     
     class Meta:
         model = User
-        fields = ['username', 'email', 'ID_number', 'phone_number', 'password', 'password2']
+        fields = ['username', 'email', 'password', 'password2']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -25,9 +23,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         
         account = User(
             email=self.validated_data['email'],
-            username=self.validated_data['username'],
-            ID_number=self.validated_data['ID_number'],
-            phone_number=self.validated_data['phone_number']
+            username=self.validated_data['username']
         )
         account.set_password(password)
         account.save()
